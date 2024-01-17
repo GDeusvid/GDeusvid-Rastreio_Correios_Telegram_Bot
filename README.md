@@ -128,6 +128,8 @@ OBS:
  ![17](https://github.com/GDeusvid/GDeusvid-Rastreio_Correios_Telegram_Bot/blob/main/images/12%20timer%202.png?raw=true)
 
 - Pronto, seu bot está completo!
+
+  <img src="https://pbs.twimg.com/media/GECwaNJXsAExiDY?format=png&name=small" width="220"> 
 ## Importante
 ### Por que as limitações de quantidade e intervalo?
 - Não é interessante ter muitos códigos na lista, nem fazer buscas com intervalos curtos, pois existe um limite de fetch do AppScript. A API utilizada para fazer o rastreio é bastante limitada e não funciona a todo momento. Isso é contornado pois o código faz várias tentativas até que encontre um resultado de rastreio. Sendo assim, realiza dezenas ou centenas de fetchs para realizar um rastreio.
