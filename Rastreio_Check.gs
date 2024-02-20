@@ -41,38 +41,84 @@ function rastrearEEnviarMensagem() {
     var respostaRastreio = JSON.stringify(respostasRastreio[j]);
     respostaRastreio =JSON.parse(respostaRastreio);
     
-    
-    
-    
 
     if (dadoderastreio.length < respostaRastreio.eventos.length){
+      Logger.log('É MENOR');
       var atualizacao=[];
       for (var i=0; i<respostaRastreio.eventos.length;i++){
       
       var evento = respostaRastreio.eventos[i];
+      var subStatusString = evento.subStatus.map(status => {
+                // Remove tags HTML da string usando expressões regulares
+                return status.replace(/<[^>]+>/g, '');
+                }).join(", ");
       var mensagemAtualizacao = `atualizacao ${i + 1}:\n` +
       `data - ${evento.data},\n` +
       `hora - ${evento.hora},\n` +
       `local - ${evento.local},\n` +
       `status - ${evento.status},\n` +
-      `- ${evento.subStatus}\n`;
+      `- ${subStatusString}\n`+
+      '\n';
 
       atualizacao.push(mensagemAtualizacao);
 
       }
-      var atualizacaomod = [];
-      atualizacaomod.push(atualizacao);
-      atualizacaomod.push("\n by GDeusvid, find in GitHub \n david.dev.go@gmail.com ");
       
-      sendMessage(id,`Rastreio: ${descricaoRastreio[j]} \n`+atualizacaomod);
-
+      
+      sendMessage(id,`Rastreio: ${descricaoRastreio[j]} \n`+atualizacao);
         var stringatualizacao=atualizacao.join(";");
         
         expenseSheet.getRange(j+2,3).setValue(stringatualizacao);
         
       } else{
-        Logger.log('sem atualizações');
         
+        if (dadoderastreio.length == respostaRastreio.eventos.length){
+          Logger.log('É IGUAL');
+          if(respostaRastreio.eventos[0].subStatus != ""){
+            Logger.log('NOVO'+respostaRastreio.eventos[0].subStatus);
+            Logger.log('REGISTRADO'+dadoderastreio[0]);
+              var conteudosubstatusTESTE=respostaRastreio.eventos[0].subStatus.toString();
+              conteudosubstatusTESTE=conteudosubstatusTESTE.replace(/\s/g, "").toLowerCase();
+              
+              var dadoderastreioTrimmed = dadoderastreio[0].replace(/\s/g, "").toLowerCase();
+              if (dadoderastreioTrimmed.includes(conteudosubstatusTESTE)){
+                Logger.log('Já atualizado! sem atualizações');
+              } else{
+
+              
+              var atualizacao=[];
+              for (var i=0; i<respostaRastreio.eventos.length;i++){
+      
+              var evento = respostaRastreio.eventos[i];
+              var subStatusString = evento.subStatus.map(status => {
+                // Remove tags HTML da string usando expressões regulares
+                return status.replace(/<[^>]+>/g, '');
+                }).join(", ");
+              
+              var mensagemAtualizacao = `atualizacao ${i + 1}:\n` +
+              `data - ${evento.data},\n` +
+              `hora - ${evento.hora},\n` +
+              `local - ${evento.local},\n` +
+              `status - ${evento.status},\n`+ 
+              `- ${subStatusString}\n`+
+              '\n';
+
+              atualizacao.push(mensagemAtualizacao);
+
+              }
+      
+      
+              sendMessage(id,`Rastreio: ${descricaoRastreio[j]} \n`+atualizacao);
+              var stringatualizacao=atualizacao.join(";");
+        
+              expenseSheet.getRange(j+2,3).setValue(stringatualizacao);
+              }
+          } else{
+              Logger.log('sem atualizações');
+          }
+        } else{
+            Logger.log('sem atualizações');
+        }
         
       }
       
