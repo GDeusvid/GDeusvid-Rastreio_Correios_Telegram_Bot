@@ -72,15 +72,17 @@
 
 | Funções | Comandos | Observações |
 | ------ | ------ | ------ |
-| Adicionar | add NB999664860BR roupa_da_shein | Tenha certeza que o código é rastreável pelos Correios.<br> Se não for, o bot pode “quebrar”. <br> A descrição deve ser uma palavra única, por exemplo: computador_gamer_novo |
+| Adicionar | add NB999664860BR roupa_da_shein | Tenha certeza que o código é rastreável pelos Correios.<br> Se não for, ~~o bot pode “quebrar”~~ receberá uma mensagem de código inválido. <br> A descrição deve ser uma palavra única, por exemplo: computador_gamer |
 | Listar | list | Irá listar todos os seus códigos cadastrados.<br> A lista é formatada para que ao clicar no código, o texto seja copiado.|
 | Rastrear | rastreio NB999664860BR <br> rast NB999664860BR <br> rt NB999664860BR| Qualquer uma das 3 opções irá rastrear a encomenda. |
 | Remover | rmv NB999664860BR | Irá remover o código de sua lista. |
 
  ### Etapa 6 - Boas práticas
 - Tenha certeza que o código é rastreável pelos Correios antes de adicionar ou rastrear.
+- Se não for um código de rastreio válido, receberá uma mensagem de código inválido.
+- Se receber um rastreio vazio, significa que ainda não houve atualização ou que não existe esse código no banco de dados dos correios.
 - Utilize uma única palavra para a descrição.
-- Tome cuidado ao rastrear, se enviar um código que não existe ou enviar vazio, o bot pode “quebrar”.
+- ~~Tome cuidado ao rastrear, se enviar um código que não existe ou enviar vazio, o bot pode “quebrar”~~. (corrigido)
 - Tome cuidado ao remover, remova apenas um código que esteja na lista.
 - Sempre que receber a encomenda e finalizar o rastreio, remova o código. Mantenha no máximo de 10 a 12 códigos por bot.
 
@@ -156,6 +158,15 @@ OBS:
 > Estou disponível para qualquer informação ou suporte.
 
 ![gif keanu agradecendo](https://media.giphy.com/media/fWfowxJtHySJ0SGCgN/giphy.gif)
+
+### Update
+>**VERIFICAÇÃO DE CÓDIGO**<br> 
+Foram implementadas melhorias na verificação de códigos de rastreio, tanto durante a solicitação de rastreio quanto ao adicionar à lista. Anteriormente, havia o risco de um loop infinito de rastreio ao se deparar com códigos inválidos, o que foi corrigido.
+
+>**INFORMAÇÕES ADICIONAIS DA API**<br>
+Foram feitas melhorias na maneira como as informações adicionais(substatus) da API são tratadas. Nem sempre a API retorna informações detalhadas sobre o destino da encomenda, limitando-se apenas a localização atual e status.
+Em resumo, o banco de dados agora permanecerá inalterado até que haja uma nova atualização de rastreio ou até que a última atualização, caso ainda não contenha o substatus, receba essas informações. Essa abordagem garante que não ocorram modificações desnecessárias no banco de dados e que as informações detalhadas sejam devidamente registradas, mesmo quando a API não as fornece inicialmente.
+obs: A questão do substatus ocorre por limitações da API que precisei contornar nessa atualização.
 
 ## License
 
